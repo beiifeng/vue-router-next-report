@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "jsx": "preserve",
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "paths": {
+      "@global/common": ["./packages/common/src/*"]
+    },
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "esnext",
+    "types": ["webpack-env"]
+  },
+  "exclude": [
+    "build",
+    "dist",
+    "example",
+    "examples",
+    "fixtures",
+    "node_modules",
+    "public",
+    "scripts/**/*",
+    "src/.umi/*",
+    "src/.umi-production/*",
+    "webpack",
+    "workflow",
+    "tsconfig.json",
+    "build.config.js",
+    "build.config.local.js",
+    ".eslintrc.js",
+    "jest.config.js",
+    "*__tmp",
+    "**/*.spec.ts",
+    "**/docs/**/*",
+    "**/lib",
+    "**/scripts"
+  ],
+  "include": [
+    "**/src/**/*.ts",
+    "**/src/**/*.tsx",
+    "**/src/**/*.vue",
+    "**/tests/**/*.ts",
+    "**/tests/**/*.tsx"
+  ]
+}

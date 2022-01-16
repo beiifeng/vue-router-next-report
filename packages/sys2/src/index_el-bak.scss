@@ -1,0 +1,234 @@
+@use "sass:map";
+
+// 先放置变量
+/* 改变主题色变量 */
+$--colors: (
+  'white': #fff,
+  'black': #000,
+  'primary': (
+    'base': #cca178,
+  ),
+  'success': (
+    'base': #67c23a,
+  ),
+  'warning': (
+    'base': #e6a23c,
+  ),
+  'danger': (
+    'base': #f56c6c,
+  ),
+  'error': (
+    'base': #f56c6c,
+  ),
+  'info': (
+    'base': #909399,
+  ),
+);
+/* 字体颜色 */
+$--text-color: (
+  'primary': #303133,
+  'regular': #606266,
+  'secondary': #909399,
+  'placeholder': #c0c4cc,
+);
+/* 边框颜色 */
+$--border-color: (
+  'base': #dcdfe6,
+  'light': #e4e7ed,
+  'lighter': #ebeef5,
+  'extra-light': #f2f6fc,
+);
+/* 边框圆角 */
+$--border-radius: (
+  'base': 2px,
+  'small': 2px,
+  'round': 20px,
+  'circle': 100%,
+);
+/* 阴影 */
+$--box-shadow: (
+  'base': (
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.04),
+  ),
+  'light': 0 2px 12px 0 rgba(0, 0, 0, 0.1),
+);
+/* 字体大小 */
+$--font-size: (
+  'extra-large': 20px,
+  'large': 18px,
+  'medium': 16px,
+  'base': 14px,
+  'small': 13px,
+  'extra-small': 12px,
+);
+/* card样式 */
+$--card: (
+  // 'border-color':
+  //   var(--el-border-color-light, map.get($--border-color, 'lighter')),
+  'border-radius': 2px,
+  'padding': 8px
+);
+/* button样式 */
+$--button-padding-vertical: (
+  'default': 12px,
+  'medium': 10px,
+  'small': 5px,
+  'mini': 7px,
+);
+
+$--button-padding-horizontal: (
+  'default': 20px,
+  'medium': 20px,
+  'small': 11px,
+  'mini': 15px,
+);
+$--table: (
+  'border-color': var(--el-border-color-lighter),
+  'border': 1px solid var(--el-table-border-color),
+  'font-color': var(--el-text-color-regular),
+  'header-font-color': var(--el-text-color-regular),
+  'row-hover-background-color': var(--el-background-color-base),
+  'current-row-background-color': var(--el-color-primary-light-7),
+  'header-background-color': hsv(0, 0, 98%),
+  'fixed-box-shadow': 0 0 10px rgba(0, 0, 0, 0.12),
+);
+// 大部分有定义的变量在 "node_modules\element-plus\packages\theme-chalk\src\common\var.scss"中
+// 如果想要改变默认值，请通过修改变量的方式进行修改
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-plus/packages/theme-chalk/lib/fonts';
+@import '~element-plus/packages/theme-chalk/src/index';
+
+// 自定义全局
+:root {
+  // 自定义变量
+  // 操作列按钮图标大小
+  --cc-btn-icons-fonts: 20px;
+}
+
+// 覆盖element-plus样式
+@include b(table) {
+  // table--border
+  @include m(border) {
+    th,
+    td {
+      // 表格前面的复选框
+      // 参见'node_modules\element-plus\packages\theme-chalk\src\table-column.scss'
+      &:first-child .cell {
+        padding-left: 14px;
+      }
+    }
+  }
+}
+
+// -- 按钮样式 start --
+.cc-btn-primary,
+.anticon.cc-btn-primary {
+  color: var(--el-color-primary);
+  font-size: 20px;
+  cursor: pointer;
+}
+.cc-btn-danger,
+.anticon.cc-btn-danger {
+  color: var(--el-color-danger);
+  font-size: var(--cc-btn-icons-fonts);
+  cursor: pointer;
+}
+.cc-btn-disabled,
+.anticon.cc-btn-disabled {
+  color: var(--el-font-color-disabled-base);
+  font-size: var(--cc-btn-icons-fonts);
+  cursor: not-allowed;
+}
+// -- 按钮样式 end --
+
+// -- 表单页样式 start --
+.box-card {
+  &.serach {
+    margin-bottom: 8px;
+  }
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > span:first-child {
+    margin-left: 6px;
+    font-size: var(--el-font-size-medium);
+  }
+  .el-button {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    height: 28px;
+    min-height: 28px;
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+  .el-button + .el-button {
+    margin-left: var(--el-card-padding);
+  }
+}
+.data-list {
+  width: 100%;
+}
+// 表格复选框
+.table-row-action {
+  cursor: pointer;
+  margin-right: 10px;
+}
+// 表格偶行
+.el-table .el-table__body tbody > tr:nth-child(even) {
+  background-color: #fbfbfb;
+}
+.area-dialogform,
+.area-search {
+  form.el-form {
+    // 查询框、form表单区使用flex布局
+    display: flex;
+    flex-wrap: wrap;
+    .el-select,
+    .el-tree-select {
+      width: 100%;
+    }
+    .el-form-item {
+      // 每个form-item定宽
+      width: 300px;
+      min-width: 280px;
+      > .el-form-item__label {
+        // 如果有label，label也定宽
+        width: 120px;
+        min-width: 100px;
+      }
+    }
+  }
+  &.form-item__one {
+    form.el-form .el-form-item {
+      // 每个form-item定宽
+      width: 96%;
+    }
+  }
+  &.form-item__two {
+    form.el-form .el-form-item {
+      // 每个form-item定宽
+      width: 48%;
+    }
+  }
+  &.form-item__three {
+    form.el-form .el-form-item {
+      // 每个form-item定宽
+      width: 32%;
+    }
+  }
+  &.form-item__four {
+    form.el-form .el-form-item {
+      // 每个form-item定宽
+      width: 24%;
+    }
+  }
+}
+.area-pagination {
+  text-align: right;
+  margin-top: var(--el-card-padding);
+}
+// -- 表单页样式 end --

@@ -1,0 +1,21 @@
+/coverage
+/packages/*/lib
+/packages/*/es
+/packages/**/fixtures/**/dist
+node_modules
+
+# local env files
+.env.local
+.env.*.local
+
+.changelog
+.umi
+.umi-test
+.umi-production
+.DS_Store
+*.log
+dist
+*__temp
+# develop tool
+.vscode
+.idea

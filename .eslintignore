@@ -1,0 +1,9 @@
+public/lib/*.js
+/scripts
+/config
+.history
+public
+dist
+.umi
+mock
+node_modules
