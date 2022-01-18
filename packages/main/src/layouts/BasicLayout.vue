@@ -5,41 +5,33 @@
         width="200"
         collapsedWidth="80"
         :trigger="null"
-        collapsible
-        :style="{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-        }"
+        style="overflow: auto; height: 100vh; position: fixed; left: 0"
       >
         <cc-sider></cc-sider>
       </a-layout-sider>
-      <a-layout
-        :style="{
-          marginLeft: '200px',
-          transition: 'all 0.2s ease 0s',
-        }"
-      >
+      <a-layout style="marginleft: 200px; transition: all 0.2s ease 0s">
         <a-layout-header
-          :style="{
-            background: '#fff',
-            padding: 0,
-            display: 'flex',
-            position: 'fixed',
-            zIndex: 1,
-            width: 'calc(100vw - 200px)',
-          }"
+          style="
+            background: #fff;
+            padding: 0;
+            display: flex;
+            position: fixed;
+            zindex: 1;
+            width: calc(100vw - 200px);
+            margin-left: 200px;
+          "
         >
           <div class="header-content"></div>
         </a-layout-header>
-        <a-layout-header style="width: calc(100vw - 200px)"></a-layout-header>
+        <a-layout-header
+          style="width: calc(100vw - 200px); margin-left: 200px"
+        ></a-layout-header>
         <a-layout
-          :style="{
-            'min-height': 'calc(100vh - 48px)',
-            'max-height': 'calc(100vh - 48px)',
-            overflow: 'auto',
-          }"
+          style="
+            min-height: calc(100vh - 48px);
+            max-height: calc(100vh - 48px);
+            overflow: auto;
+          "
         >
           <a-layout-content>
             <router-view v-slot="{ Component, route }">
@@ -61,9 +53,14 @@
 <script>
 import { CcSider } from '@/components/layouts';
 import QiankunWrapper from '@/qiankun/QiankunWrapper.vue';
-import { defineComponent, onBeforeMount, onMounted, onUnmounted } from 'vue';
+import {
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+  onUnmounted,
+  ref,
+} from 'vue';
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'BasicLayout',
@@ -72,34 +69,31 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const store = useStore();
 
-    let removeRouterAfterEach = null;
+    console.log('mainMain');
+
+    let removeRouterAfterEach = ref(null);
 
     onBeforeMount(async () => {
-      // something there
-      store.dispatch({
-        type: 'authority/fetchAuthority',
-      });
+      // something here
     });
 
     onMounted(() => {
-      console.log('BasicLayout:onMounted');
       // something here
-      // 注册一个后置路由守卫
-      if (!removeRouterAfterEach) {
-        removeRouterAfterEach = router.afterEach((to) => {
+      // add one after guard
+      if (!removeRouterAfterEach.value) {
+        removeRouterAfterEach.value = router.afterEach((to) => {
           console.log('BasicLayout:afterEach', to.fullPath);
         });
       }
     });
 
     onUnmounted(() => {
-      console.log('BasicLayout:onUnmounted');
       // 移除后置路由守卫
-      if (removeRouterAfterEach) {
-        removeRouterAfterEach();
-        removeRouterAfterEach = null;
+      if (removeRouterAfterEach.value) {
+        removeRouterAfterEach.value();
+        removeRouterAfterEach.value = null;
+        console.log('BasicLayout: remove after guard');
       }
     });
 

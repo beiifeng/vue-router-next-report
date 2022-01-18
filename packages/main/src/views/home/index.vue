@@ -3,14 +3,7 @@
     <h1>Hello Home</h1>
   </div>
 </template>
-
-<script>
-import { defineComponent } from 'vue';
-
-export default defineComponent({});
-</script>
-
-<style scoped lang="scss">
+<style scoped lang="less">
 .hello {
   text-align: center;
 }

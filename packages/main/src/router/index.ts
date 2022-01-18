@@ -5,23 +5,6 @@ import { microApps } from './qiankunRouter';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/member',
-    name: 'LoginLayout',
-    component: () => import('@/layouts/LoginLayout.vue'),
-    children: [
-      {
-        path: 'login-v1',
-        name: 'LoginV1',
-        component: () => import('@/views/login/login-v1.vue'),
-      },
-      // 直接跳转到/，然后由/做判断应该继续怎么跳转
-      {
-        path: '',
-        redirect: '/',
-      },
-    ],
-  },
-  {
     path: '/',
     name: 'BasicLayout',
     component: () => import('@/layouts/BasicLayout.vue'),

@@ -1,5 +1,5 @@
 <template>
-  <div id="pageContainer" ref="containerRef"></div>
+  <div id="pageContainer"></div>
 </template>
 <script>
 import { loadMicroApp } from 'qiankun';
@@ -10,7 +10,7 @@ import {
   onUpdated,
   ref,
 } from 'vue';
-import { apps, loadingMicroApp } from './index';
+import { apps } from './index';
 import { useQiankun } from './useQiankun';
 
 const QiankunWrapper = defineComponent({
@@ -23,14 +23,14 @@ const QiankunWrapper = defineComponent({
   },
   setup(props) {
     const qiankun = useQiankun();
-    const containerRef = ref();
     let microApp = null;
     let propName = ref('');
 
     const loadQiankunApp = () => {
+      // find app to load
       const app = apps.filter((item) => item.name === props.name)[0];
-      console.log(`[${app.name}] will load`);
       if (app) {
+        console.log(`[${app.name}] will load`);
         microApp = loadMicroApp({
           ...app,
           props: {
@@ -38,9 +38,8 @@ const QiankunWrapper = defineComponent({
           },
         });
         propName.value = props.name;
+        console.log(`[${app.name}] was loaded`);
       }
-      console.log(`[${app.name}] was loaded`);
-      // startQiankun();
       qiankun.emmitGlobalStateChange({
         authority: {},
         layout: {},
@@ -56,7 +55,7 @@ const QiankunWrapper = defineComponent({
           microApp = null;
         });
       }
-      return Promise.resolve('卸载成功');
+      return Promise.resolve('no app can be unload.');
     };
 
     onMounted(() => {
@@ -64,8 +63,8 @@ const QiankunWrapper = defineComponent({
     });
 
     onUpdated(async () => {
-      console.log(`[${propName.value}] was updated`);
       if (propName.value !== props.name) {
+        console.log(`[${propName.value}] was updated`);
         await unloadQiankunApp();
         loadQiankunApp();
         propName.value = props.name;
@@ -77,20 +76,7 @@ const QiankunWrapper = defineComponent({
       unloadQiankunApp();
     });
 
-    const handleGoback = () => {
-      window.history.back();
-    };
-
-    const handleReload = () => {
-      window.location.reload();
-    };
-
-    return {
-      loadingMicroApp,
-      handleGoback,
-      handleReload,
-      containerRef,
-    };
+    return {};
   },
 });
 

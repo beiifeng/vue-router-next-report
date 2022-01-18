@@ -1,29 +1,36 @@
 # vue-router-next-report
 
-测试方法  
+Step 1
+
 ```bash
 $ yarn
 ```
 
-接下来继续
+Step 2
+
 ```bash
 $ cd ./packages/main/
 $ yarn start
 ```
 
-另开控制台
-```bash
-$ cd ./packages/sys2/
-$ yarn start
-```
+Step 3  
+brower http://localhost:7100/
 
-在另开控制台
-```bash
-$ cd ./packages/ppp/
-$ yarn start
-```
+open console
 
-然后在浏览器访问
+Step 4
 
-http://localhost:7100/ 进行切换
+1.  case 1
 
+- Menu switch to `Home`
+- Menu switch to `MainDemo`
+- Menu switch to `Home` We see console print `BasicLayout:afterEach` every once.
+
+2.  case 2
+
+- Menu switch to `Sys2Demo1`
+- wait seconds and clear console error
+- Menu switch to `Sys2Demo2`
+- Menu switch to `Sys2Demo1` We see console print `BasicLayout:afterEach` every twice
+
+Is here [signle-spa](https://github.com/single-spa/single-spa/blob/master/src/navigation/navigation-events.js#L105) something wrong ?

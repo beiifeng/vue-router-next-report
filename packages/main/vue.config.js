@@ -12,7 +12,6 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   filenameHashing: true,
-  // 生产环境关闭source map
   productionSourceMap: true,
   devServer: {
     hot: true,
@@ -59,49 +58,5 @@ module.exports = {
       libraryTarget: 'umd',
       jsonpFunction: `webpackJsonp_${name}`,
     },
-  },
-  chainWebpack: (config) => {
-    config.module
-      .rule('fonts')
-      .use('url-loader')
-      .loader('url-loader')
-      .merge({
-        options: {
-          fallback: {
-            options: {
-              publicPath: deployPath,
-            },
-          },
-        },
-      });
-    config.optimization.splitChunks({
-      cacheGroups: {
-        antdvVendor: {
-          name: `antdv`,
-          test: /[\\/]node_modules[\\/]ant-design-vue[\\/]/,
-          priority: -8,
-          chunks: 'initial',
-        },
-        antIconsVendor: {
-          name: `ant-icons`,
-          test: /[\\/]node_modules[\\/]@ant-design[\\/]icons-(vue|svg)[\\/]/,
-          priority: -8,
-          chunks: 'initial',
-        },
-        defaultVendors: {
-          name: `chunk-vendors`,
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          chunks: 'initial',
-        },
-        common: {
-          name: `chunk-common`,
-          minChunks: 2,
-          priority: -20,
-          chunks: 'initial',
-          reuseExistingChunk: true,
-        },
-      },
-    });
   },
 };

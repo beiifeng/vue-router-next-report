@@ -1,17 +1,13 @@
+import router, { history } from '@/router';
 import { microApps } from '@/router/qiankunRouter';
-import { isProduction } from '@/utils/util';
-import type { ObjectType, RegistrableApp, FrameworkLifeCycles } from 'qiankun';
-import { initGlobalState, registerMicroApps, start } from 'qiankun';
+import type { ObjectType, RegistrableApp } from 'qiankun';
+import { initGlobalState } from 'qiankun';
 import type { App } from 'vue';
 import { ref } from 'vue';
 import { qiankunKey } from './injectionSymbols';
-import router, { history } from '@/router';
 const pkg = require('../../package.json');
 
 let installed = false;
-
-// 指示qiankun是否启动
-let qiankunStarted = false;
 
 // 子应用加载状态
 const loadingMicroApp = ref<boolean>(false);
@@ -32,21 +28,6 @@ export const apps: RegistrableApp<ObjectType>[] = microApps.map((app) => ({
   },
 }));
 
-/** 注册qiankun子应用 */
-export function registerQiankun(
-  lifeCycles?: FrameworkLifeCycles<ObjectType>,
-): void {
-  registerMicroApps(apps, lifeCycles);
-}
-
-/** 启动qiankun，只需要启动一次即可 */
-export function startQiankun(): void {
-  if (!qiankunStarted) {
-    qiankunStarted = true;
-    start({ prefetch: false });
-  }
-}
-
 const qiankunPlugin = {
   install(app: App): void {
     if (installed) {
@@ -54,12 +35,6 @@ const qiankunPlugin = {
     }
     installed = true;
 
-    const afterAppMount = [];
-
-    // 注册
-    // registerQiankun({
-    //   afterMount: afterAppMount,
-    // });
     // 初始化 state
     const { setGlobalState, onGlobalStateChange, offGlobalStateChange } =
       initGlobalState({
@@ -112,28 +87,16 @@ const qiankunPlugin = {
 
     // 暴露qiankun API到全局
     app.config.globalProperties.$qiankun = {
-      startQiankun,
       registerStateChangeHandler,
       unregisterStateChangeHandler,
       emmitGlobalStateChange,
-      afterAppMount,
     };
     // 提供给USE API 使用
     app.provide(qiankunKey, {
-      startQiankun,
       registerStateChangeHandler,
       unregisterStateChangeHandler,
       emmitGlobalStateChange,
-      afterAppMount,
     });
-
-    if (!isProduction) {
-      registerStateChangeHandler('_dev_qiankun_state', (state, prev) => {
-        // state: 变更后的状态; prev 变更前的状态
-        // eslint-disable-next-line no-console
-        console.log('[main] listen state change by qiankun:', state, prev);
-      });
-    }
 
     // 监听
     onGlobalStateChange((state, prev) => {

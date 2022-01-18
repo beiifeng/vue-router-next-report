@@ -7,7 +7,6 @@ export type OnGlobalStateChangeCallback = (
 ) => void;
 
 export type Qiankun = {
-  startQiankun?: () => void;
   registerStateChangeHandler: (
     name: string,
     callback: OnGlobalStateChangeCallback,
@@ -18,9 +17,6 @@ export type Qiankun = {
 
 export function useQiankun(): Qiankun {
   return inject(qiankunKey, {
-    startQiankun: () => {
-      warn('QiankunPlugin is not install!');
-    },
     registerStateChangeHandler: () => {
       warn('QiankunPlugin is not install!');
     },

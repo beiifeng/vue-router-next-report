@@ -10,10 +10,7 @@
       class="menu-content"
       mode="inline"
       theme="dark"
-      v-model:selectedKeys="selectedKeysRef"
       @click="handleMenuClick"
-      :open-keys="openKeysRef"
-      @openChange="onOpenChange"
     >
       <template v-for="item in menuDataRef" :key="item.id">
         <template v-if="!item.children && item.isShow === '1'">
@@ -24,9 +21,6 @@
             :name="item.name"
             :target="item.target"
           >
-            <template v-if="hasIcon(item.icon)" #icon>
-              <component :is="Icon(item.icon)"></component>
-            </template>
             {{ item.name }}
           </a-menu-item>
         </template>
@@ -39,10 +33,8 @@
 </template>
 <script>
 import { DEFAULT_HOME_PAGE, SIDER_TITLE } from '@/config/globalConfig';
-import { computed, defineComponent, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import { hasIcon, Icon } from '../../utils/menuIcon';
+import { defineComponent, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import SubMenu from './SubMenu.vue';
 
 export default defineComponent({
@@ -51,65 +43,62 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const route = useRoute();
-    const store = useStore();
-
-    const menuDataRef = computed(() => store.state.layout.menuData);
-    const menuMapRef = computed(() => store.state.layout.menuMap);
-    const menuUpdateTimeRef = computed(() => store.state.layout.menuUpdateTime);
-    const openKeysRef = computed(() => store.state.layout.openKeys);
-    const selectedKeysRef = computed({
-      get: () => store.state.layout.selectedKeys,
-      set: (val) =>
-        store.commit({
-          type: 'layout/updateOpenAndSelectedKeys',
-          payload: {
-            selectedKeys: val,
-          },
-        }),
-    });
+    const menuDataRef = ref([
+      {
+        id: 'a1',
+        path: '/home',
+        name: 'Home',
+        isShow: '1',
+      },
+      {
+        id: 'a2',
+        path: '/main/demo',
+        name: 'MainDemo',
+        isShow: '1',
+      },
+      {
+        id: 'a3',
+        path: '/main/demo3',
+        name: 'MainDemo3',
+        isShow: '1',
+      },
+      {
+        path: '/sys2/example',
+        id: 'b1',
+        name: 'Sys2Demo1',
+        isShow: '1',
+      },
+      {
+        path: '/sys2/example2',
+        id: 'b2',
+        name: 'Sys2Demo2',
+        isShow: '1',
+      },
+      {
+        path: '/ppp/example',
+        id: 'c1',
+        name: 'PppDemo1',
+        isShow: '1',
+      },
+      {
+        path: '/ppp/example2',
+        id: 'c2',
+        name: 'PppDemo2',
+        isShow: '1',
+      },
+    ]);
 
     const handleMenuClick = ({ item }) => {
       router.push(item.path);
-    };
-
-    const onOpenChange = (keys) => {
-      const lastOpenKey = keys[keys.length - 1];
-      let willOpenKeys = [];
-      if (lastOpenKey) {
-        willOpenKeys = (
-          menuMapRef.value.get(lastOpenKey)?.parentIds || []
-        ).concat(lastOpenKey);
-      }
-      store.commit({
-        type: 'layout/updateOpenAndSelectedKeys',
-        payload: {
-          openKeys: willOpenKeys,
-        },
-      });
     };
 
     onMounted(() => {
       // something here
     });
 
-    watch(menuUpdateTimeRef, () => {
-      store.dispatch({
-        type: 'layout/setOpenKeysAndSelectedKeys',
-        payload: {
-          nextPath: route.path,
-        },
-      });
-    });
-
     return {
       menuDataRef,
-      openKeysRef,
-      selectedKeysRef,
-      hasIcon,
-      Icon,
       handleMenuClick,
-      onOpenChange,
       SIDER_TITLE,
       DEFAULT_HOME_PAGE,
     };
